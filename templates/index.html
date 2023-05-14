@@ -23,60 +23,56 @@
     </div>
   </header>
 
-  <div class="language-graph">    
-      <form action="#">
-        <div class="input-field">
-          <label>Patterns(Input Strings):</label>
-          <input type="text" placeholder="Separate multiples value by comma(,)" class="search-field" required>
-        </div>
+  <form method="get" action = "{{url_for('home')}}">
+    <div class="input-text">
+      <textarea name="text" cols="70" rows="10" placeholder="Enter a sample text"></textarea>
+    </div>
+    <button type="submit" class="generate-btn" name="generateDFA" value="generate">Search</button>
+  </form>
 
-        <div class="input-field">
-        <label>State:</label>
-        <input type="text" placeholder="Separate multiples value by comma(,)" class="search-field" required>
-        </div>
-
-        <div class="input-field">
-        <label>Alphabet:</label>
-        <input type="text" placeholder="Separate multiples value by comma(,)" class="search-field" required>
-        </div>
-
-        <div class="input-field">
-        <label>Initial State:</label>
-        <input type="text" placeholder="Enter initial state" class="search-field" required>
-        </div>
-
-        <div class="input-field">
-        <label>Final State:</label>
-        <input type="text" placeholder="Separate multiples value by comma(,)" class="search-field" required>
-        </div>
-
-        <label>Transition Table</label>
-      </form>
+  <div class="result">
+  <div class="table-results">
+    <table>
+        <thead>
+            <tr>
+                <th>Pattern (Input String)</th>
+                <th>State</th>
+                <th>Alphabet</th>
+                <th>Initial State</th>
+                <th>Final State</th>
+                <th>Transition Function</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{pattern|join(', ') }}</td>
+                <td>{{states|join(', ')}}</td>
+                <td>{{alphabets|join(', ')}}</td>
+                <td>{{start_state}}</td>
+                <td>{{accept_states|join(', ')}}</td>
+                <td>(q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0
+                  (q24,a):q0
+                  (q24,a):q0
+                  
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
     
-
-
-    <div class="backgroundBox">
-      <div class="box2">
-        <h3>DFA demo by entering a sample text</h3>
-    </div>
-    </div>
   </div>
-
-
-
-  <div class="input-text">
-    <textarea name="text" cols="70" rows="10" placeholder="Enter a sample text"></textarea>
   </div>
-  <button type="submit" class="generate-btn" name="generate-DFA" value="generate">Search</button>
-
-
 
   <div class="result">
     <h1>Result</h3>
-    <h3>Pattern: and,most,pretty</h3>
+    <h3>Pattern: {{pattern|join(', ') }} </h3>
     <h3>The text:</h3>
-    <p>1. Hello, I am ho</p>
-    
+
+    {% for sentence in sentences_string %}
+    <p>{{loop.index ~ '. ' ~ sentence}}</p>
+    {% endfor %}
+
     <h3>Occurrences</h3>
     <p>and: 3 founds</p>
     <p>most: 4 founds</p>
@@ -96,22 +92,29 @@
               </tr>
           </thead>
           <tbody>
+              {% for i in sentences_data %}
               <tr>
-                  <td>I am happy, love to be my son and daughter</td>
-                  <td>"a-->c-->d"</td>
-                  <td>Accept</td>
-                  <td>most,and</td>
-                  <td>most:3, and:2</td>
+                  <td>{{i.sentence}}</td>
+                  <td>{{i.transition_link|join(' --> ')}}</td>
+                  <td>{{i.status}}</td>
+
+                  {% if i.substrings_found %}
+                  <td>{{i.substrings_found|join(', ')}}</td>
+                  {% else %}
+                  <td>-</td>
+                  {% endif %}
+
+                  {% if i.occurrence_count %}
+                  <td>{{input_pattern}}: {{count}} founds</td>
+                  
+                  {% else %}
+                  <td>-</td>
+                  {% endif %}
+
                   <td>most:31,24,20, and:2</td>
               </tr>
-              <tr>
-                  <td>I am happy, love to be my son</td>
-                  <td>"a-->c-->d"</td>
-                  <td>Accept</td>
-                  <td>most,and</td>
-                  <td>most:3, and:2</td>
-                  <td>most:31,24,20, and:2</td>
-              </tr>
+              {% endfor %}
+              
           </tbody>
       </table>
       
