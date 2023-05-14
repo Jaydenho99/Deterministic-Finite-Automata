@@ -116,8 +116,7 @@ body {
   transition: 0.15s ease;
   cursor: pointer;
   width: 200px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 650px;
 }
 
 .generate-btn:is(:hover, :focus) {
@@ -134,7 +133,7 @@ body {
 
 
 .result .table-results{
-  margin-top: 2rem;
+  margin-top: 20px;
 }
 
 .result p{
@@ -144,6 +143,7 @@ body {
 .result .table-results table{
   background: gainsboro;
   width: 1300px;
+  margin-bottom: 20px;
   border-radius: 2rem;
   padding: 1.8rem;
   text-align: center;
@@ -164,9 +164,11 @@ body {
 
 .result .table-results table tbody td{
   height: 2.8rem;
-  border-bottom: 1px solid rgba(132,139,200,0.18);
+  border-bottom: 1px solid black;
   color: black;
   font-size: 14px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .table-results table tbody tr:last-child td{
@@ -203,4 +205,19 @@ body {
   margin-bottom: 15px;
   margin-top: 15px;
 }
+
+.title-headings{
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.text-display{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
 

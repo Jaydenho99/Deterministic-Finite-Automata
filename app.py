@@ -595,6 +595,8 @@ def home():
                     transition_link.append(f"{current_state}")
                 elif char not in alphabets:
                     continue  # Skip characters not present in alphabets
+                elif (current_state, char) not in transition:
+                    continue
                     
             substrings_found = find_substring(char_substring, pattern)
             
@@ -602,10 +604,12 @@ def home():
                 status='Accepted'
                 occurrence_count=calc_occurrence_count(substrings_found,sentence)
                 positions=find_position_index(sentence,pattern)
+                for input_pattern, count in occurrence_count.items():
+                    total_occurrence_count[input_pattern] += count
             else:
                 status='Rejected'
                 occurrence_count={}
-                positions=""
+                positions={}
 
             sentence_data = {
                     'sentence': sentence,
@@ -618,7 +622,7 @@ def home():
                 }
             sentences_data.append(sentence_data)
 
-        return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states,sentences_string=sentences_string,sentences_data=sentences_data)
+        return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states,sentences_string=sentences_string,sentences_data=sentences_data,total_occurrence_count=total_occurrence_count,transition=transition)
 
     return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states)
 

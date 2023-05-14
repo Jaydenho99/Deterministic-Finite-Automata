@@ -25,12 +25,13 @@
 
   <form method="get" action = "{{url_for('home')}}">
     <div class="input-text">
-      <textarea name="text" cols="70" rows="10" placeholder="Enter a sample text"></textarea>
+      <textarea name="text" cols="100" rows="12" placeholder="Enter a sample text"></textarea>
     </div>
     <button type="submit" class="generate-btn" name="generateDFA" value="generate">Search</button>
   </form>
 
   <div class="result">
+  <h1 class="title-headings">Predefined Settings</h1>
   <div class="table-results">
     <table>
         <thead>
@@ -40,7 +41,7 @@
                 <th>Alphabet</th>
                 <th>Initial State</th>
                 <th>Final State</th>
-                <th>Transition Function</th>
+                
                 
             </tr>
         </thead>
@@ -51,34 +52,36 @@
                 <td>{{alphabets|join(', ')}}</td>
                 <td>{{start_state}}</td>
                 <td>{{accept_states|join(', ')}}</td>
-                <td>(q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0, (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0 (q24,a):q0
-                  (q24,a):q0
-                  (q24,a):q0
-                  
-                </td>
             </tr>
             
         </tbody>
     </table>
     
   </div>
+  <h2>Transition Function</h2>
+    
   </div>
 
   <div class="result">
-    <h1>Result</h3>
-    <h3>Pattern: {{pattern|join(', ') }} </h3>
-    <h3>The text:</h3>
+    <h1 class="title-headings">Result Summary</h1>
+    <h3 class="title-headings">Pattern:</h3>
+    <p>{{pattern|join(', ') }}</p>
+    <h3 class="title-headings">Text Breakdown:</h3>
 
+    <div class="text-display">
     {% for sentence in sentences_string %}
-    <p>{{loop.index ~ '. ' ~ sentence}}</p>
+    <p class="text-output">{{loop.index ~ '. ' ~ sentence}}</p>
+    {% endfor %}
+    </div>
+
+    <h3 class="title-headings">Total Occurrences:</h3>
+    {% for key, value in total_occurrence_count.items() %}
+      <p>{{ key }}: {{ value }} found</p>
     {% endfor %}
 
-    <h3>Occurrences</h3>
-    <p>and: 3 founds</p>
-    <p>most: 4 founds</p>
-
-    <h3>Demostration</h3>
+    
     <div class="table-results">
+      <h3 class="title-headings">Demostration</h3>
       <table>
           <thead>
               <tr>
@@ -87,7 +90,7 @@
                   <th>Status</th>
                   <th>Substrings Found</th>
                   <th>Occurrences</th>
-                  <th>Position</th>
+                  <th>Position(Index)</th>
                   
               </tr>
           </thead>
@@ -105,13 +108,24 @@
                   {% endif %}
 
                   {% if i.occurrence_count %}
-                  <td>{{input_pattern}}: {{count}} founds</td>
-                  
+                  <td>
+                    {% for key, value in i.occurrence_count.items() %}
+                    {{ key }}: {{ value }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
                   {% else %}
                   <td>-</td>
                   {% endif %}
 
-                  <td>most:31,24,20, and:2</td>
+                  {% if i.position %}
+                  <td>
+                    {% for key, value in i.position.items() %}
+                    {{ key }}: {{ value|join(', ') }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
+                  {% else %}
+                  <td>-</td>
+                  {% endif %}
               </tr>
               {% endfor %}
               
