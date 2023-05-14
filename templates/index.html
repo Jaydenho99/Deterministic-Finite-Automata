@@ -30,6 +30,7 @@
     <button type="submit" class="generate-btn" name="generateDFA" value="generate">Search</button>
   </form>
 
+  {% if sentences_data %}
   <div class="result">
   <h1 class="title-headings">Predefined Settings</h1>
   <div class="table-results">
@@ -58,8 +59,31 @@
     </table>
     
   </div>
-  <h2>Transition Function</h2>
-    
+  <div class="transition">
+  <div class="table-results">
+    <h2 class="title-headings">Transition Function</h2>
+    <p>Note: Every ' ' represents space</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Current State</th>
+            <th>Input</th>
+            <th>Next State</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transition_key, next_state in transition.items() %}
+            <tr>
+              <td>{{ transition_key[0] }}</td>
+              <td>{{ transition_key[1] }}</td>
+              <td>{{ next_state }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <p>Note: Every ' ' represents space</p>
+      </div>
+    </div>
   </div>
 
   <div class="result">
@@ -134,5 +158,6 @@
       
   </div>
   </div>
+  {% endif %}
 </body>
 </html>

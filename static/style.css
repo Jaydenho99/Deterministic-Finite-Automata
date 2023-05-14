@@ -184,6 +184,10 @@ body {
   width: 1000px;
 }
 
+.transition .table-results table tr td{
+  width: 800px;
+}
+
 .input-field{
   display: flex;
   flex-direction: row;
