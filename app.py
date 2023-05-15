@@ -119,10 +119,11 @@ def home():
     if request.args.get('generateDFA'):
         text=request.args.get('text')
         sentences_string=text.split('.')
+        clean_sentences = [sentence for sentence in sentences_string if sentence.strip()]
         total_occurrence_count = {pattern[i]: 0 for i in range(len(pattern))}  # Initialize the total occurrence count dynamically
         sentences_data = []
 
-        for sentence in sentences_string:
+        for sentence in clean_sentences:
             current_state = start_state  # Reset the current state for the next sentence
             transition_link = []  # List to store the transitions
             char_substring = []
@@ -162,7 +163,7 @@ def home():
                 }
             sentences_data.append(sentence_data)
 
-        return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states,sentences_string=sentences_string,sentences_data=sentences_data,total_occurrence_count=total_occurrence_count,transition=transition)
+        return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states,sentences_string=clean_sentences,sentences_data=sentences_data,total_occurrence_count=total_occurrence_count,transition=transition)
 
     return render_template('index.html',pattern=pattern,states=states,alphabets=alphabets,start_state=start_state,accept_states=accept_states)
 
