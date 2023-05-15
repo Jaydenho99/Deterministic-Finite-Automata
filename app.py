@@ -6,6 +6,7 @@ import re
 app = Flask(__name__)
 app.secret_key = "super secret key"
 
+# Identify the substring within the sentence
 def find_substring(char_substring,pattern):
 
     substrings = set()
@@ -26,6 +27,7 @@ def find_substring(char_substring,pattern):
 
     return substrings
 
+# Calculate the occurrence count of substrings found within the sentence
 def calc_occurrence_count(substrings_found,sentence):
     occurrence_count = {}
     # Calculate and display occurrence count
@@ -37,6 +39,7 @@ def calc_occurrence_count(substrings_found,sentence):
             occurrence_count[substring]=count
     return occurrence_count
 
+# Identify the index position
 def find_position_index(sentence,pattern):
     positions = {}
     for input_pattern in pattern:
@@ -47,6 +50,8 @@ def find_position_index(sentence,pattern):
 
 @app.route('/',methods=['POST', 'GET'])
 def home():
+
+    # Define the pattern, states, alphabets, start state, accept state and transition
     pattern=["and","most","good","bad","pretty","dirty","blue"]
     states = ["q0","q1","q2","q3","q4","q5","q6","q7","q8","q9","q10","q11","q12","q13","q14","q15","q16","q17","q18","q19","q20","q21","q22","q23","q24","q25","q26","q27","q28"]
     alphabets = ["a","n","d","m","o","s","t","g","b","p","r","e","y","i","l","u"]
@@ -116,19 +121,21 @@ def home():
     ('q28',' '):'q0',
     }
 
-
-    if request.args.get('generateDFA'):
-        text=request.args.get('text')
-        sentences_string = re.split(r'[.\n]+', text)
+    # If the search button is clicked
+    if request.args.get('generatebtn'):
+        text=request.args.get('text') # Get the input text
+        sentences_string = re.split(r'[.\n]+', text) # Split the text into sentences based on period and newline
         clean_sentences = [sentence for sentence in sentences_string if sentence.strip()]
         total_occurrence_count = {pattern[i]: 0 for i in range(len(pattern))}  # Initialize the total occurrence count dynamically
         sentences_data = []
 
+        # Process each characters and perform checking on transition defined for every sentence
         for sentence in clean_sentences:
             current_state = start_state  # Reset the current state for the next sentence
             transition_link = []  # List to store the transitions
             char_substring = []
             
+            # Check every characters within the sentence
             for char in sentence.lower():
                 if (current_state, char) in transition:
                     next_state = transition[(current_state, char)]
@@ -142,6 +149,7 @@ def home():
                     
             substrings_found = find_substring(char_substring, pattern)
             
+            # If substring found within the sentence, store related results
             if substrings_found:
                 status='Accepted'
                 occurrence_count=calc_occurrence_count(substrings_found,sentence)
@@ -153,6 +161,7 @@ def home():
                 occurrence_count={}
                 positions={}
 
+            # Append the result to sentences_data to display in html
             sentence_data = {
                     'sentence': sentence,
                     'char_substring': char_substring,

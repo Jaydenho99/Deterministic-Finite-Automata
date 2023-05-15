@@ -25,9 +25,9 @@
 
   <form method="get" action = "{{url_for('home')}}">
     <div class="input-text">
-      <textarea name="text" cols="100" rows="12" placeholder="Enter a sample text"></textarea>
+      <textarea name="text" cols="100" rows="12" placeholder="Enter a text or paragraph"></textarea>
     </div>
-    <button type="submit" class="generate-btn" name="generateDFA" value="generate">Search</button>
+    <button type="submit" class="generate-btn" name="generatebtn" value="generate">Search</button>
   </form>
 
   {% if sentences_data %}
@@ -42,6 +42,7 @@
                 <th>Alphabet</th>
                 <th>Initial State</th>
                 <th>Final State</th>
+                <th>Transition Function</th>
                 
                 
             </tr>
@@ -53,37 +54,22 @@
                 <td>{{alphabets|join(', ')}}</td>
                 <td>{{start_state}}</td>
                 <td>{{accept_states|join(', ')}}</td>
+                <td>
+                  {% set separator = ', ' %}
+                  {% set transition_string = '' %}
+                  {% for key, value in transition.items() %}
+                    {{ transition_string}} {{key}} --> {{value}} {{separator }}
+                  {% endfor %}
+                  {{ transition_string.rstrip(separator) }}
+
+                </td>
             </tr>
             
         </tbody>
     </table>
     
   </div>
-  <div class="transition">
-  <div class="table-results">
-    <h2 class="title-headings">Transition Function</h2>
-    <p>Note: Every ' ' represents space</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Current State</th>
-            <th>Input</th>
-            <th>Next State</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for transition_key, next_state in transition.items() %}
-            <tr>
-              <td>{{ transition_key[0] }}</td>
-              <td>{{ transition_key[1] }}</td>
-              <td>{{ next_state }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <p>Note: Every ' ' represents space</p>
-      </div>
-    </div>
+ 
   </div>
 
   <div class="result">
