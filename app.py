@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, make_response, session, url_for, redirect, flash, Markup
 from urllib.request import urlopen
 import simplejson
+import re
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -118,7 +119,7 @@ def home():
 
     if request.args.get('generateDFA'):
         text=request.args.get('text')
-        sentences_string=text.split('.')
+        sentences_string = re.split(r'[.\n]+', text)
         clean_sentences = [sentence for sentence in sentences_string if sentence.strip()]
         total_occurrence_count = {pattern[i]: 0 for i in range(len(pattern))}  # Initialize the total occurrence count dynamically
         sentences_data = []
